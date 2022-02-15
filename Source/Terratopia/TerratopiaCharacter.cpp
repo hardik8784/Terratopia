@@ -107,7 +107,6 @@ void ATerratopiaCharacter::BeginPlay()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
 void ATerratopiaCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// set up gameplay key bindings
@@ -136,6 +135,9 @@ void ATerratopiaCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("TurnRate", this, &ATerratopiaCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ATerratopiaCharacter::LookUpAtRate);
+
+	// Bind item interaction
+	PlayerInputComponent->BindAction("ItemInterAction", IE_Pressed, this, &ATerratopiaCharacter::Interaction);
 }
 
 void ATerratopiaCharacter::OnFire()
@@ -298,3 +300,20 @@ bool ATerratopiaCharacter::EnableTouchscreenMovement(class UInputComponent* Play
 	
 	return false;
 }
+
+void ATerratopiaCharacter::Interaction()
+{
+	// Check if ItemsWithinRange is empty or not
+	if(ItemsWithinRange.IsValidIndex(0))
+	{
+		AActor* Item = ItemsWithinRange[0];
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "Pain Peko");
+		// Interaction with inventory
+
+		// Delete item from the world
+		ItemsWithinRange.Remove(Item);
+		Item->SetActorEnableCollision(false);
+		Item->SetActorHiddenInGame(true);
+	}
+}
+
