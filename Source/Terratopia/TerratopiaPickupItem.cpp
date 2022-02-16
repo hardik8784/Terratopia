@@ -5,7 +5,10 @@
 /// Last Modified	:	2022/12/16
 /// Description		:	Pickup Item
 /// Revision History:	2nd - Zhikang
-///						2nd - Zhikang
+///								- Remove BeginPlay, OnBeginOverLap and OnEndOverLap
+///								- Remove CollisionBox
+///								- Added Interaction function						
+
 #include "TerratopiaPickupItem.h"
 #include "TerratopiaCharacter.h"
 #include "Components/SceneComponent.h"

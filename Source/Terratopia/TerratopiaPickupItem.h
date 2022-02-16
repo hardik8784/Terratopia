@@ -4,9 +4,10 @@
 /// Author			:	Zhikang Chen
 /// Last Modified	:	2022/02/16
 /// Description		:	Pickup Item
-/// Revision History:	1st - Zhikang
-///						2nd - Zhikang
-///							Remove code for collision check
+/// Revision History:	2nd - Zhikang
+///								- Remove BeginPlay, OnBeginOverLap and OnEndOverLap
+///								- Remove CollisionBox
+///								- Added Interaction function
 
 #pragma once
 #include "CoreMinimal.h"
