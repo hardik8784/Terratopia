@@ -86,9 +86,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint8 bUsingMotionControllers : 1;
 
-	/** PickupItems that are colliding with the player. */
+	/** Range for item pick up */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	TArray<AActor*> ItemsWithinRange;
+	float ItemPickupRange;
 
 protected:
 	
@@ -129,7 +129,7 @@ protected:
 	void TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location);
 	TouchData	TouchItem;
 
-	/* Interacts with items with ItemsWithinRange*/
+	/* Interacts with items */
 	void Interaction();
 
 protected:
