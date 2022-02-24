@@ -341,4 +341,10 @@ void ATerratopiaCharacter::Interaction()
 		Item->Interaction();
 	}
 }
+void ATerratopiaCharacter::setFDynamicStringDelegate(FString sString) {
+	FMultiCastStringDelegate.Broadcast(sString);
+
+
+}
+
 

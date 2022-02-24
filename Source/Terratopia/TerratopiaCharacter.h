@@ -14,6 +14,9 @@ class UMotionControllerComponent;
 class UAnimMontage;
 class USoundBase;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FMultiCastStringDelegate, FString);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDynamicStringDelegate, FString, LString);
 UCLASS(config=Game)
 class ATerratopiaCharacter : public ACharacter
 {
@@ -54,6 +57,10 @@ class ATerratopiaCharacter : public ACharacter
 public:
 	ATerratopiaCharacter();
 
+	UFUNCTION(BlueprintCallable)
+	void setFDynamicStringDelegate(FString sString);
+
+	FMultiCastStringDelegate FMultiCastStringDelegate;
 protected:
 	virtual void BeginPlay();
 
