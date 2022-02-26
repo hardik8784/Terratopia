@@ -10,7 +10,9 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
+#include "TerratopiaPickupItem.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "Kismet/KismetSystemLibrary.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -82,6 +84,9 @@ ATerratopiaCharacter::ATerratopiaCharacter()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+	// Setting the item pickup range
+	ItemPickupRange = 250;
 }
 
 void ATerratopiaCharacter::BeginPlay()
@@ -107,7 +112,6 @@ void ATerratopiaCharacter::BeginPlay()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
 void ATerratopiaCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// set up gameplay key bindings
@@ -136,6 +140,9 @@ void ATerratopiaCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("TurnRate", this, &ATerratopiaCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ATerratopiaCharacter::LookUpAtRate);
+
+	// Bind item interaction
+	PlayerInputComponent->BindAction("ItemInterAction", IE_Pressed, this, &ATerratopiaCharacter::Interaction);
 }
 
 void ATerratopiaCharacter::OnFire()
@@ -298,3 +305,46 @@ bool ATerratopiaCharacter::EnableTouchscreenMovement(class UInputComponent* Play
 	
 	return false;
 }
+
+void ATerratopiaCharacter::Interaction()
+{
+	// Set the parameter for SphereTrace
+	FVector StartTraceLoction = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraLocation();
+	FVector EndTraceLoction = StartTraceLoction;
+	EndTraceLoction += GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation().Vector() * ItemPickupRange;	
+	float Radius = 5.0f;
+	UEngineTypes::ConvertToTraceType(ECC_Camera);
+	bool bComplexTrace = false;
+	TArray<AActor*> ActorToIgnore;
+	ActorToIgnore.Add(Mesh1P->GetOwner());
+	EDrawDebugTrace::Type DebugTrace = EDrawDebugTrace::None;
+	FHitResult Hit;
+	bool bIgnoreSelf = false;
+
+	// SphereTrace from the position of the camera to the direction times ItemPickupRange
+	UKismetSystemLibrary::SphereTraceSingle(FirstPersonCameraComponent, 
+		StartTraceLoction,
+		EndTraceLoction,
+		Radius,
+		UEngineTypes::ConvertToTraceType(ECC_Camera),
+		bComplexTrace,
+		ActorToIgnore,
+		DebugTrace,
+		Hit,
+		bIgnoreSelf);
+
+	// Determine if the the Actor hit is a ATerratopiaPickupItem class
+	// If so call the Interaction function from ATerratopiaPickupItem
+	ATerratopiaPickupItem* Item = Cast<ATerratopiaPickupItem>(Hit.Actor);
+	if(Item)
+	{
+		Item->Interaction();
+	}
+}
+void ATerratopiaCharacter::setFDynamicStringDelegate(FString sString) {
+	FMultiCastStringDelegate.Broadcast(sString);
+
+
+}
+
+

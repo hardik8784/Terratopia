@@ -14,6 +14,9 @@ class UMotionControllerComponent;
 class UAnimMontage;
 class USoundBase;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FMultiCastStringDelegate, FString);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDynamicStringDelegate, FString, LString);
 UCLASS(config=Game)
 class ATerratopiaCharacter : public ACharacter
 {
@@ -54,6 +57,10 @@ class ATerratopiaCharacter : public ACharacter
 public:
 	ATerratopiaCharacter();
 
+	UFUNCTION(BlueprintCallable)
+	void setFDynamicStringDelegate(FString sString);
+
+	FMultiCastStringDelegate FMultiCastStringDelegate;
 protected:
 	virtual void BeginPlay();
 
@@ -85,6 +92,10 @@ public:
 	/** Whether to use motion controller location for aiming. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint8 bUsingMotionControllers : 1;
+
+	/** Range for item pick up */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	float ItemPickupRange;
 
 protected:
 	
@@ -124,7 +135,10 @@ protected:
 	void EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location);
 	void TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location);
 	TouchData	TouchItem;
-	
+
+	/* Interacts with items */
+	void Interaction();
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
@@ -143,6 +157,5 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-
 };
 
