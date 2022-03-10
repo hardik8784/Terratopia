@@ -26,7 +26,7 @@ ATerratopiaPickupItem::ATerratopiaPickupItem()
 	SetActorEnableCollision(true);
 }
 
-void ATerratopiaPickupItem::Interaction()
+void ATerratopiaPickupItem::Interaction_Implementation()
 {
 	Destroy();
 }
