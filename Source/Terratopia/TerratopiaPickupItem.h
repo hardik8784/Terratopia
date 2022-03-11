@@ -33,7 +33,9 @@ public:
 	// Sets default values for this actor's properties
 	ATerratopiaPickupItem();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Interaction")
 	/* Interact */
-	virtual void Interaction();
+	void Interaction();
+
+	virtual void Interaction_Implementation();
 };
