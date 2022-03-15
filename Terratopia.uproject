@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:876421d2b7dfb383aac5264f9cfee34ad056cb519773035bc9500df8f55e45b1
-size 381
+{
+	"FileVersion": 3,
+	"EngineAssociation": "4.27",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "Terratopia",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "Landmass",
+			"Enabled": true
+		},
+		{
+			"Name": "Water",
+			"Enabled": true
+		}
+	]
+}
