@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "TerratopiaPickupItem.h"
+#include "InteractableCharacter.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -339,6 +340,14 @@ void ATerratopiaCharacter::Interaction()
 	if(Item)
 	{
 		Item->Interaction();
+	}
+	else
+	{
+		AInteractableCharacter* Character = Cast<AInteractableCharacter>(Hit.Actor);
+		if (Character)
+		{
+			Character->Interaction();
+		}
 	}
 }
 void ATerratopiaCharacter::setFDynamicStringDelegate(FString sString) {
